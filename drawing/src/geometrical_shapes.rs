@@ -4,7 +4,7 @@ use rand::Rng;
 // ---------------- TRAITS ----------------
 
 pub trait Drawable {
-    fn draw(&self, img: &mut Image);
+    fn draw(&self, image: &mut Image);
     fn color(&self) -> Color;
 }
 
@@ -12,46 +12,36 @@ pub trait Displayable {
     fn display(&mut self, x: i32, y: i32, color: Color);
 }
 
-
-
-
 // ---------------- POINT ----------------
 
 pub struct Point {
-        x : i32 ,
-        y : i32
+    x : i32,
+    y : i32
 }
 
 impl Point {
-    pub fn new(a:i32 , b : i32) -> Self {
+    pub fn new(a:i32, b : i32) -> Self {
         Point{
-            x: a ,
-            y : b
+            x: a,
+            y: b
         }
     }
     pub fn random(w : i32 , h : i32) -> Self{
         let mut myrange  =  rand::thread_rng();
         let x =  myrange.gen_range(0..w);
         let y =  myrange.gen_range(0..h);
-        Point {
-            x ,
-            y
-        }
+        Self {x, y}
     }
 }
 
 impl Drawable for Point {
-    fn draw(&self, img: &mut Image) {
-        
+    fn draw(&self, image: &mut Image) {
+        image.display(self.x, self.y, self.color());
     }
-
     fn color(&self) -> Color {
-        
+        Color::red()
     }
 }
-
-
-
 
 
 // ---------------- LINE ----------------
@@ -62,25 +52,61 @@ pub struct Line {
 }
 
 impl Line {
-       pub fn new(s :  Point ,  e : Point) -> Self {
-        Line {
-            start :  s , 
-            end : e
+       pub fn new(s: Point, e: Point) -> Self {
+        Line { 
+            start: s,
+            end :e
         }
     } 
-
     pub fn random(w: i32, h: i32) -> Self {
-       
+       Self {
+            start: Point::random(w, h),
+            end: Point::random(w, h)
+       }
     }
 }
 
 impl Drawable for Line {
-    fn draw(&self, img: &mut Image) {
-        // implementation here
+    fn draw(&self, image: &mut Image) {
+        let mut x0 = self.start.x;
+        let mut y0 = self.start.y;
+        let x1 = self.end.x;
+        let y1 = self.end.y;
+
+        let dx = (x1 - x0).abs();
+        let sx = if x0 < x1 { 
+            1 
+        }else{
+            -1 
+        };
+        let dy = -(y1 - y0).abs();
+        let sy = if y0 < y1 { 
+            1 
+        } else { 
+            -1 
+        };
+        let mut err = dx + dy;
+        let color = self.color();
+
+        loop {
+            image.display(x0, y0, color.clone());
+            if x0 == x1 && y0 == y1 { 
+                break; 
+            }
+            let e2 = 2 * err;
+            if e2 >= dy { 
+                err += dy;
+                x0 += sx; 
+            }
+            if e2 <= dx { 
+                err += dx;
+                y0 += sy; 
+            }
+        }
     }
 
     fn color(&self) -> Color {
-        // implementation here
+        Color::blue()
     }
 }
 
@@ -88,89 +114,71 @@ impl Drawable for Line {
 
 
 
-// ---------------- RECTANGLE ----------------
+// // ---------------- RECTANGLE ----------------
 
-pub struct Rectangle {
-    top_left: Point,
-    bottom_right: Point,
-}
+// pub struct Rectangle {
+//     top_left: Point,
+//     bottom_right: Point,
+// }
 
-impl Rectangle {
-    pub fn new(top_left: &Point, bottom_right: &Point) -> Self {
-      
-    }
-}
+// impl Rectangle {
+//     pub fn new(top_left: &Point, bottom_right: &Point) -> Self {
+//       Self { 
+//         top_left: Point,
+//         bottom_right: Point
+//       }
+//     }
+// }
 
-impl Drawable for Rectangle {
-    fn draw(&self, img: &mut Image) {
+// impl Drawable for Rectangle {
+//     
+// }
+
+
+
+
+
+
+
+// // ---------------- TRIANGLE ----------------
+
+// pub struct Triangle {
+//     p1: Point,
+//     p2: Point,
+//     p3: Point,
+// }
+
+// impl Triangle {
+//     pub fn new(p1: &Point, p2: &Point, p3: &Point) -> Self {
         
-    }
+//     }
+// }
 
-    fn color(&self) -> Color {
+// impl Drawable for Triangle {
+//    
+// }
+
+
+
+// // ---------------- CIRCLE ----------------
+
+// pub struct Circle {
+//     center: Point,
+//     radius: i32,
+// }
+
+// impl Circle {
+//     pub fn new(center: &Point, radius: i32) -> Self {
         
-    }
-}
+//     }
 
-
-
-
-
-
-
-// ---------------- TRIANGLE ----------------
-
-pub struct Triangle {
-    p1: Point,
-    p2: Point,
-    p3: Point,
-}
-
-impl Triangle {
-    pub fn new(p1: &Point, p2: &Point, p3: &Point) -> Self {
+//     pub fn random(w: i32, h: i32) -> Self {
         
-    }
-}
+//     }
+// }
 
-impl Drawable for Triangle {
-    fn draw(&self, img: &mut Image) {
+// impl Drawable for Circle {
+//    
         
-    }
-
-    fn color(&self) -> Color {
-        
-    }
-}
-
-
-
-
-
-
-
-
-// ---------------- CIRCLE ----------------
-
-pub struct Circle {
-    center: Point,
-    radius: i32,
-}
-
-impl Circle {
-    pub fn new(center: &Point, radius: i32) -> Self {
-        
-    }
-
-    pub fn random(w: i32, h: i32) -> Self {
-        
-    }
-}
-
-impl Drawable for Circle {
-    fn draw(&self, img: &mut Image) {
-        
-    }
-
-    fn color(&self) -> Color {
-        
-    }
-}
+//     }
+// }
