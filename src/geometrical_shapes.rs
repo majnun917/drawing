@@ -124,8 +124,8 @@ pub struct Rectangle {
 impl Rectangle {
     pub fn new(p1: &Point, p2: &Point) -> Self {
         Self {
-            p1: Point::new(p1.x, p1.y),
-            p2: Point::new(p2.x, p2.y),
+            p1: Point::new(p1.x, p1.y*2),
+            p2: Point::new(p2.x, p2.y*2),
         }
     }
 }
