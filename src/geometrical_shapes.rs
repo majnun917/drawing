@@ -106,7 +106,7 @@ impl Drawable for Line {
     }
 
     fn color(&self) -> Color {
-        Color::blue()
+        Color::white()
     }
 }
 
