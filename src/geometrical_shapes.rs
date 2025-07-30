@@ -114,49 +114,67 @@ impl Drawable for Line {
 
 
 
-// // ---------------- RECTANGLE ----------------
+// ---------------- RECTANGLE ----------------
 
-// pub struct Rectangle {
-//     top_left: Point,
-//     bottom_right: Point,
-// }
+pub struct Rectangle {
+    p1: Point,
+    p2: Point,
+}
 
-// impl Rectangle {
-//     pub fn new(top_left: &Point, bottom_right: &Point) -> Self {
-//       Self { 
-//         top_left: Point,
-//         bottom_right: Point
-//       }
-//     }
-// }
+impl Rectangle {
+    pub fn new(p1: &Point, p2: &Point) -> Self {
+        Self {
+            p1: Point::new(p1.x, p1.y),
+            p2: Point::new(p2.x, p2.y),
+        }
+    }
+}
 
-// impl Drawable for Rectangle {
-//     
-// }
+impl Drawable for Rectangle {
+    fn draw(&self, image: &mut Image) {
+        // Draw the four lines connecting the corners directly
+        Line::new(Point::new(self.p1.x, self.p1.y), Point::new(self.p2.x, self.p1.y)).draw(image);
+        Line::new(Point::new(self.p2.x, self.p1.y), Point::new(self.p2.x, self.p2.y)).draw(image);
+        Line::new(Point::new(self.p2.x, self.p2.y), Point::new(self.p1.x, self.p2.y)).draw(image);
+        Line::new(Point::new(self.p1.x, self.p2.y), Point::new(self.p1.x, self.p1.y)).draw(image);
+    }
 
-
-
-
+    fn color(&self) -> Color {
+        Color::green()
+    }
+}
 
 
 
 // // ---------------- TRIANGLE ----------------
 
-// pub struct Triangle {
-//     p1: Point,
-//     p2: Point,
-//     p3: Point,
-// }
+pub struct Triangle {
+    p1: Point,
+    p2: Point,
+    p3: Point,
+}
 
-// impl Triangle {
-//     pub fn new(p1: &Point, p2: &Point, p3: &Point) -> Self {
-        
-//     }
-// }
+impl Triangle {
+    pub fn new(p1: &Point, p2: &Point, p3: &Point) -> Self {
+        Self { 
+                p1:Point::new(p1.x, p1.y),
+                p2:Point::new(p2.x, p2.y), 
+                p3:Point::new(p3.x, p3.y) 
+            }
+    }
+}
 
-// impl Drawable for Triangle {
-//    
-// }
+impl Drawable for Triangle {
+    fn draw(&self, image: &mut Image) {
+        Line::new(Point::new(self.p1.x, self.p1.y), Point::new(self.p2.x, self.p2.y)).draw(image);
+        Line::new(Point::new(self.p2.x, self.p2.y), Point::new(self.p3.x, self.p3.y)).draw(image);
+        Line::new(Point::new(self.p3.x, self.p3.y), Point::new(self.p1.x, self.p1.y)).draw(image);
+    }
+
+    fn color(&self) -> Color {
+        Color::green()
+    }
+}
 
 
 
